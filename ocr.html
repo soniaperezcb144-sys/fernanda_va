@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR - Detalle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            font-size: 0.95rem;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Sección de Código */
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(8, 145, 178, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #0891b2;
+            font-weight: 400;
+            border-bottom: 2px solid #e0f2fe;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Código */
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            border: 1px solid #0891b2;
+        }
+
+        .code-block code {
+            display: block;
+            white-space: pre;
+        }
+
+        /* Sintaxis highlighting manual */
+        .keyword { color: #38bdf8; }
+        .string { color: #7dd3fc; }
+        .comment { color: #64748b; }
+        .function { color: #22d3ee; }
+        .number { color: #a78bfa; }
+
+        /* Glosario */
+        .glossary {
+            margin-top: 1.5rem;
+        }
+
+        .glossary-item {
+            margin-bottom: 1.5rem;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+            border-radius: 8px;
+            border-left: 4px solid #0891b2;
+            transition: transform 0.2s ease;
+        }
+
+        .glossary-item:hover {
+            transform: translateX(5px);
+        }
+
+        .glossary-term {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #0891b2;
+            margin-bottom: 0.5rem;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .glossary-icon {
+            font-size: 1.3rem;
+        }
+
+        .glossary-description {
+            color: #475569;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+        }
+
+        .glossary-params {
+            margin-top: 0.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .glossary-params li {
+            margin-bottom: 0.3rem;
+            color: #334155;
+            font-size: 0.9rem;
+        }
+
+        .param-name {
+            font-weight: 600;
+            color: #0e7490;
+            font-family: monospace;
+        }
+
+        .example-output {
+            background: #f8fafc;
+            border: 1px dashed #94a3b8;
+            padding: 0.8rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #475569;
+            font-family: monospace;
+        }
+
+        .ocr-visual {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+
+        .ocr-example {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 6px;
+            border: 2px solid #0891b2;
+        }
+
+        .ocr-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .ocr-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #0891b2;
+        }
+
+        .process-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+
+        .process-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #0891b2;
+        }
+
+        .step-number {
+            background: #0891b2;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: #0891b2;
+            margin-bottom: 0.3rem;
+        }
+
+        .step-desc {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .code-block {
+                font-size: 0.8rem;
+                padding: 1rem;
+            }
+
+            .header {
+                padding: 2rem 1rem;
+            }
+
+            .glossary-item {
+                padding: 1rem;
+            }
+
+            .ocr-visual {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scroll suave */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="index.html" class="back-link">← Volver al portafolio</a>
+        <h1>OCR - Reconocimiento Óptico de Caracteres</h1>
+    </header>
+
+    <!-- Contenido -->
+    <div class="container">
+        <!-- ¿Qué es OCR? -->
+        <section class="section">
+            <h2 class="section-title">🔍 ¿Qué es OCR?</h2>
+            <div class="glossary">
+                <div class="glossary-item">
+                    <div class="glossary-description">
+                        <strong>OCR = Optical Character Recognition</strong> (Reconocimiento Óptico de Caracteres)
+                        <br><br>
+                        Es una tecnología que permite extraer texto de imágenes, convirtiéndolo en texto digital 
+                        editable y copiable. Reconoce las formas de las letras y las convierte a texto plano.
+                    </div>
+                    <div class="ocr-visual">
+                        <div class="ocr-example">
+                            <div class="ocr-icon">📄</div>
+                            <div class="ocr-label">Documento</div>
+                        </div>
+                        <div class="ocr-example">
+                            <div class="ocr-icon">📸</div>
+                            <div class="ocr-label">Foto</div>
+                        </div>
+                        <div class="ocr-example">
+                            <div class="ocr-icon">🧾</div>
+                            <div class="ocr-label">Recibo</div>
+                        </div>
+                        <div class="ocr-example">
+                            <div class="ocr-icon">🪧</div>
+                            <div class="ocr-label">Señal</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Proceso OCR -->
+        <section class="section">
+            <h2 class="section-title">⚙️ Proceso de OCR</h2>
+            <div class="glossary">
+                <div class="glossary-item">
+                    <div class="glossary-description">
+                        Pasos que sigue el programa para extraer texto de una imagen:
+                    </div>
+                    <div class="process-flow">
+                        <div class="process-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">Cargar Imagen</div>
+                                <div class="step-desc">Se lee la imagen desde el archivo (foto1.jpg)</div>
+                            </div>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">Redimensionar</div>
+                                <div class="step-desc">Se ajusta a 800×400 píxeles para procesamiento óptimo</div>
+                            </div>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">Convertir a Grises</div>
+                                <div class="step-desc">Se elimina el color para simplificar el análisis</div>
+                            </div>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <div class="step-title">Binarización (Threshold)</div>
+                                <div class="step-desc">Se separa el texto del fondo usando umbral de 120</div>
+                            </div>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <div class="step-title">Reconocimiento OCR</div>
+                                <div class="step-desc">Tesseract analiza y extrae el texto en español</div>
+                            </div>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-number">6</div>
+                            <div class="step-content">
+                                <div class="step-title">Mostrar Resultado</div>
+                                <div class="step-desc">Se imprime el texto detectado en consola</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Código -->
+        <section class="section">
+            <h2 class="section-title">Código del Proyecto</h2>
+            <div class="code-block">
+<code>
+    '''
+OCR=Optical character recognition / reconocimiento
+optico de caracteres
+por ejemplo=
+-Foto de un documento
+-documento escaneado
+-un recibo
+-señal con letras, una foto bien enfocada
+
+¿Que hace ?= Reconoce las formas de las letras y
+convierte a texto original editable/copiable'''
+#C:\Users\MATUTINO\AppData\Local\Programs\Tesseract-OCR
+
+import cv2 #importar pythoncv para manipular
+import pytesseract
+
+pytesseract.pytesseract.tesseract_cmd=r"C:\Users\MATUTINO\AppData\Local\Programs\Tesseract-OCR\tesseract.exe"
+
+#cargar imagen
+
+img_texto=cv2.imread("foto1.jpg")
+#redimenzionar el tamaño de la imagen
+img_final=cv2.resize(img_texto,(800,400))
+
+#convertir a escala de grises
+img_gris=cv2.cvtColor(img_final,cv2.COLOR_BGR2GRAY)
+#SEPARAMOS EL FONDO CON EL TEXTO
+img_res=cv2.threshold(img_gris,120,255,cv2.THRESH_BINARY)[1]
+#devuelve 2 valores lso pixeles y la iamgen procesada
+
+#CONFIGURAR OCR
+texto=pytesseract.image_to_string(img_res,lang='spa')
+#como parametro le pasamops la variable con la imagen procesada y el idioma
+#imprimnimos el titulo
+print("texto detectado")
+print(texto)
+
+cv2.imshow("imagen analizada",img_final)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+</code>
+            </div>
+        </section>
+
+        <!-- Glosario de Funciones -->
+        <section class="section">
+            <h2 class="section-title">Glosario de Librerías y Funciones</h2>
+            
+            <div class="glossary">
+                <!-- pytesseract -->
+                <div class="glossary-item">
+                    <div class="glossary-term">
+                        <span class="glossary-icon">📚</span>
+                        pytesseract
+                    </div>
+                    <div class="glossary-description">
+                        Librería de Python que proporciona una interfaz para usar Tesseract-OCR, 
+                        un motor de reconocimiento de texto de código abierto desarrollado por Google. 
+                        Permite extraer texto de imágenes de manera sencilla.
+                    </div>
+                    <div class="example-output">
+                        📦 Instalación: pip install pytesseract<br>
+                        🔧 Requiere: Instalar Tesseract-OCR por separado
+                    </div>
+                </div>
+
+                <!-- tesseract_cmd -->
+                <div class="glossary-item">
+                    <div class="glossary-term">
+                        <span class="glossary-icon">⚙️</span>
+                        pytesseract.tesseract_cmd
+                    </div>
+                    <div class="glossary-description">
+                        Variable que especifica la ruta completa del ejecutable de Tesseract-OCR en el sistema. 
+                        Es necesaria en Windows para que Python pueda encontrar y ejecutar Tesseract. 
+                        La 'r' antes del string indica una ruta raw (ignora caracteres de escape).
+                    </div>
+                    <div class="example-output">
+                        💡 En Linux/Mac generalmente no es necesario configurar esta ruta
+                    </div>
+                </div>
+
+                <!-- cv2.threshold() -->
+                <div class="glossary-item">
+                    <div class="glossary-term">
+                        <span class="glossary-icon">🎯</span>
+                        cv2.threshold(src, thresh, maxval, type)
+                    </div>
+                    <div class="glossary-description">
+                        Función de binarización que convierte una imagen en escala de grises a una imagen 
+                        binaria (solo blanco y negro). Separa el texto del fondo aplicando un umbral. 
+                        Los píxeles por debajo del umbral se vuelven negros, los demás blancos.
+                    </div>
+                    <ul class="glossary-params">
+                        <li><span class="param-name">src:</span> Imagen en escala de grises</li>
+                        <li><span class="param-name">thresh:</span> Valor del umbral (120 en este caso)</li>
+                        <li><span class="param-name">maxval:</span> Valor máximo para píxeles que pasan el umbral (255 = blanco)</li>
+                        <li><span class="param-name">type:</span> Tipo de umbralización (THRESH_BINARY)</li>
+                        <li><span class="param-name">return:</span> Tupla con (valor_umbral, imagen_binarizada)</li>
+                    </ul>
+                    <div class="example-output">
+                        🎨 Píxel < 120 → Negro (0) | Píxel ≥ 120 → Blanco (255)
+                    </div>
+                </div>
+
+                <!-- THRESH_BINARY -->
+                <div class="glossary-item">
+                    <div class="glossary-term">
+                        <span class="glossary-icon">⚫⚪</span>
+                        cv2.THRESH_BINARY
+                    </div>
+                    <div class="glossary-description">
+                        Tipo de umbralización binaria simple. Si el valor del píxel es mayor que el umbral, 
+                        se establece en el valor máximo (255 - blanco), de lo contrario se establece en 0 (negro). 
+                        Ideal para separar texto oscuro sobre fondo claro.
+                    </div>
+                    <div class="example-output">
+                        📊 Otros tipos: THRESH_BINARY_INV (inverso), THRESH_TRUNC, THRESH_TOZERO
+                    </div>
+                </div>
+
+                <!-- [1] índice -->
+                <div class="glossary-item">
+                    <div class="glossary-term">
+                        <span class="glossary-icon">📌</span>
+                        threshold()[1]
+                    </div>
+                    <div class="glossary-description">
+                        cv2.threshold() retorna una tupla con 2 elementos: (valor_umbral_usado, imagen_procesada). 
+                        Usando [1] accedemos solo a la imagen procesada (el segundo elemento), que es lo que necesitamos 
+                        para el OCR.
+                    </div>
+                    <div class="example-output">
+                        🔢 [0] = valor umbral | [1] = imagen binarizada
+                    </div>
+                </div>
+
+                <!-- image_to_string() -->
+                <div class="glossary-item">
+                    <div class="glossary-term">
+                        <span class="glossary-icon">🔤</span>
+                        pytesseract.image_to_string(image, lang)
+                    </div>
+                    <div class="glossary-description">
+                        Función principal de pytesseract que analiza una imagen y extrae todo el texto detectado, 
+                        retornándolo como un string. Utiliza el motor Tesseract para el reconocimiento.
+                    </div>
+                    <ul class="glossary-params">
+                        <li><span class="param-name">image:</span> Imagen a analizar (preferiblemente preprocesada)</li>
+                        <li><span class="param-name">lang:</span> Código del idioma ('spa'=español, 'eng'=inglés, 'fra'=francés)</li>
+                        <li><span class="param-name">return:</span> String con todo el texto detectado en la imagen</li>
+                    </ul>
+                </div>
+
+                <!-- lang='spa' -->
+                <div class="glossary-item">
+                    <div class="glossary-term">
+                        <span class="glossary-icon">🌐</span>
+                        lang='spa'
+                    </div>
+                    <div class="glossary-description">
+                        Parámetro que especifica el idioma del texto a reconocer. 'spa' es el código para español. 
+                        Usar el idioma correcto mejora significativamente la precisión del OCR, ya que cada idioma 
+                        tiene patrones y caracteres específicos.
+                    </div>
+                    <div class="example-output">
+                        🗣️ Códigos comunes: 'eng' (inglés), 'spa' (español), 'fra' (francés), 'deu' (alemán)
+                    </div>
+                </div>
+
+                <!-- Preprocesamiento para OCR -->
+                <div class="glossary-item">
+                    <div class="glossary-term">
+                        <span class="glossary-icon">🔧</span>
+                        Importancia del Preprocesamiento
+                    </div>
+                    <div class="glossary-description">
+                        El preprocesamiento (redimensionar, escala de grises, binarización) es crucial para 
+                        obtener buenos resultados en OCR. Mejora el contraste, elimina ruido y facilita 
+                        la detección de caracteres.
+                    </div>
+                    <ul class="glossary-params">
+                        <li><span class="param-name">Redimensionar:</span> Normaliza el tamaño para procesamiento consistente</li>
+                        <li><span class="param-name">Escala de grises:</span> Reduce complejidad eliminando información de color</li>
+                        <li><span class="param-name">Binarización:</span> Maximiza contraste entre texto y fondo</li>
+                    </ul>
+                </div>
+
+                <!-- Umbral 120 -->
+                <div class="glossary-item">
+                    <div class="glossary-term">
+                        <span class="glossary-icon">🎚️</span>
+                        ¿Por qué umbral = 120?
+                    </div>
+                    <div class="glossary-description">
+                        El valor 120 (rango 0-255) es un punto medio que funciona bien para muchas imágenes. 
+                        Sin embargo, el valor óptimo depende de la imagen específica. Imágenes muy oscuras 
+                        o claras pueden requerir valores diferentes.
+                    </div>
+                    <div class="example-output">
+                        💡 Valores típicos: 100-150 para documentos | 80-120 para fotos | Experimentar para mejores resultados
+                    </div>
+                </div>
+
+                <!-- Aplicaciones OCR -->
+                <div class="glossary-item">
+                    <div class="glossary-term">
+                        <span class="glossary-icon">💼</span>
+                        Aplicaciones del OCR
+                    </div>
+                    <div class="glossary-description">
+                        El OCR tiene múltiples aplicaciones prácticas en el mundo real:
+                    </div>
+                    <ul class="glossary-params">
+                        <li><span class="param-name">Digitalización:</span> Convertir documentos físicos a digitales</li>
+                        <li><span class="param-name">Automatización:</span> Extraer datos de facturas, recibos automáticamente</li>
+                        <li><span class="param-name">Accesibilidad:</span> Leer texto en voz alta para personas con discapacidad visual</li>
+                        <li><span class="param-name">Traducción:</span> Traducir texto de señales, menús en fotos</li>
+                        <li><span class="param-name">Búsqueda:</span> Hacer buscable el contenido de imágenes y PDFs escaneados</li>
+                    </ul>
+                </div>
+
+                <!-- Limitaciones -->
+                <div class="glossary-item">
+                    <div class="glossary-term">
+                        <span class="glossary-icon">⚠️</span>
+                        Limitaciones del OCR
+                    </div>
+                    <div class="glossary-description">
+                        Para obtener buenos resultados, el OCR requiere ciertas condiciones:
+                    </div>
+                    <ul class="glossary-params">
+                        <li><span class="param-name">Calidad de imagen:</span> Foto clara y enfocada, sin distorsión</li>
+                        <li><span class="param-name">Iluminación:</span> Buena iluminación uniforme, sin sombras fuertes</li>
+                        <li><span class="param-name">Tipografía:</span> Letras estándar, no manuscritas o muy estilizadas</li>
+                        <li><span class="param-name">Orientación:</span> Texto horizontal y correctamente orientado</li>
+                        <li><span class="param-name">Contraste:</span> Texto oscuro sobre fondo claro (o viceversa)</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</body>
+</html>
