@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lectura de Placas - CBTIS 144</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(8, 145, 178, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #0891b2;
+            font-weight: 400;
+            border-bottom: 2px solid #e0f2fe;
+            padding-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            border: 1px solid #0891b2;
+        }
+
+        .code-block code {
+            display: block;
+            white-space: pre;
+        }
+
+        .keyword { color: #38bdf8; }
+        .string { color: #7dd3fc; }
+        .comment { color: #64748b; }
+        .function { color: #22d3ee; }
+        .number { color: #a78bfa; }
+
+        ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        ul li {
+            margin-bottom: 0.5rem;
+            padding-left: 1rem;
+            border-left: 3px solid #06b6d4;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        @media (max-width: 768px) {
+            .container { padding: 2rem 1rem; }
+            .section { padding: 1.5rem; }
+            .code-block { font-size: 0.8rem; padding: 1rem; }
+            .header { padding: 2rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>📸 LECTURA DE PLACAS VEHICULARES - CBTIS 144</h1>
+    </header>
+
+    <div class="container">
+        <section class="section">
+            <h2 class="section-title">🚗 Descripción del Proyecto</h2>
+            <p>
+                Este sistema utiliza técnicas de <b>Visión Artificial</b> para reconocer texto en imágenes 
+                de placas vehiculares mediante la tecnología <b>OCR (Reconocimiento Óptico de Caracteres)</b>.
+                Lee dos imágenes distintas, extrae el texto de cada placa y lo compara con una lista de placas
+                autorizadas para determinar si el acceso está permitido o denegado.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">💻 Código Python del Proyecto</h2>
+            <div class="code-block">
+<code>import cv2
+import pytesseract
+
+# CAMBIA ESTA RUTA A DONDE INSTALASTE TESSERACT EN TU COMPUTADORA
+pytesseract.pytesseract.tesseract_cmd = r"C:\Users\MATUTINO\AppData\Local\Programs\Tesseract-OCR\tesseract.exe"
+
+# Lista de placas autorizadas en el estacionamiento del CBTIS144
+placas_autorizadas = ['XYZ789', 'QWEYQ87', 'NITGUILTY', '["BL445567|']
+
+print("="*60)
+print("SISTEMA DE CONTROL DE ACCESO - ESTACIONAMIENTO CBTIS 144")
+print("="*60)
+
+# 1. CARGAR 2 IMAGENES DE PLACAS
+print("\n--- CARGANDO IMAGENES ---\n")
+
+# Primera placa
+placa1 = cv2.imread("placas3.jpg")
+placanueva1 = cv2.resize(placa1, (800, 300))
+
+# Segunda placa
+placa2 = cv2.imread("placas4.png")
+placanueva2 = cv2.resize(placa2, (800, 300))
+
+# 2. EXTRAER EL TEXTO DE LAS 2 PLACAS
+print("--- EXTRAYENDO TEXTO ---\n")
+
+# Procesar primera placa
+placa_gris1 = cv2.cvtColor(placanueva1, cv2.COLOR_BGR2GRAY)
+placa_res1 = cv2.threshold(placa_gris1, 120, 255, cv2.THRESH_BINARY)[1]
+texto_placa1 = pytesseract.image_to_string(placa_res1, lang='eng')
+texto_limpio1 = texto_placa1.strip().replace(" ", "").replace("-", "").upper()
+
+print("Placa 1 detectada: " + texto_limpio1)
+
+# Procesar segunda placa
+placa_gris2 = cv2.cvtColor(placanueva2, cv2.COLOR_BGR2GRAY)
+placa_res2 = cv2.threshold(placa_gris2, 120, 255, cv2.THRESH_BINARY)[1]
+texto_placa2 = pytesseract.image_to_string(placa_res2, lang='eng')
+texto_limpio2 = texto_placa2.strip().replace(" ", "").replace("-", "").upper()
+
+print("Placa 2 detectada: " + texto_limpio2)
+
+# 3. RECORRER LA LISTA DE LAS PLACAS PERMITIDAS
+print("\n--- LISTA DE PLACAS AUTORIZADAS ---")
+for placa in placas_autorizadas:
+    print("  * " + placa)
+
+# 4. MOSTRAR UN MENSAJE INDICANDO QUE LAS PLACAS LEIDAS
+print("\n--- VERIFICANDO PLACAS ESCANEADAS ---\n")
+
+# Verificar placa 1
+print("Placa 1: " + texto_limpio1)
+if texto_limpio1 in placas_autorizadas:
+    print("  ACCESO PERMITIDO!!!!")
+    print("  Bienvenido al estacionamiento del CBTIS 144")
+else:
+    print("  ACCESO DENEGADO")
+    print("  Placa no encontrada")
+
+print("")
+
+# Verificar placa 2
+print("Placa 2: " + texto_limpio2)
+if texto_limpio2 in placas_autorizadas:
+    print("  ACCESO PERMITIDO!!!!")
+    print("  Bienvenido al estacionamiento del CBTIS 144")
+else:
+    print("  ACCESO DENEGADO")
+    print("  Placa no encontrada")
+
+# 5. MOSTRAR UN MENSAJE DE LAS PLACAS RESTANTES (LAS QUE NO SE ESCANEARON)
+print("\n--- PLACAS NO ESCANEADAS (RESTANTES) ---")
+
+placas_escaneadas = []
+placas_escaneadas.append(texto_limpio1)
+placas_escaneadas.append(texto_limpio2)
+
+print("Las siguientes placas autorizadas NO fueron escaneadas:")
+for placa in placas_autorizadas:
+    if placa not in placas_escaneadas:
+        print("  * " + placa)
+
+# 6. HACER LA PRUEBA CARGANDO 2 FOTOS DE PLACAS REALES Y 2 IMAGENES COMO EN CLASE
+print("\n--- MOSTRANDO IMAGENES ---")
+print("Presiona cualquier tecla para continuar")
+
+cv2.imshow("Placa 1 - " + texto_limpio1, placanueva1)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+cv2.imshow("Placa 2 - " + texto_limpio2, placanueva2)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+print("\n" + "="*60)
+print("SISTEMA FINALIZADO")
+print("="*60)</code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">📘 Glosario de Términos</h2>
+            <ul>
+                <li><b>OCR (Optical Character Recognition):</b> Tecnología que permite reconocer y extraer texto de imágenes o documentos escaneados.</li>
+                <li><b>OpenCV:</b> Biblioteca de código abierto utilizada para el procesamiento de imágenes y visión artificial en Python.</li>
+                <li><b>Pytesseract:</b> Interfaz que conecta Python con el motor de reconocimiento de texto Tesseract.</li>
+                <li><b>cv2.imread():</b> Función que carga una imagen en memoria desde un archivo.</li>
+                <li><b>cv2.cvtColor():</b> Convierte la imagen a escala de grises o a otros espacios de color.</li>
+                <li><b>cv2.threshold():</b> Aplica un umbral a la imagen para mejorar el contraste entre letras y fondo.</li>
+                <li><b>pytesseract.image_to_string():</b> Extrae el texto detectado en la imagen procesada.</li>
+                <li><b>if / else:</b> Estructuras de decisión que permiten ejecutar instrucciones según condiciones.</li>
+                <li><b>Listas:</b> Estructuras de datos que almacenan varios elementos dentro de una sola variable.</li>
+                <li><b>Placas autorizadas:</b> Conjunto de códigos registrados que tienen permiso para ingresar al estacionamiento.</li>
+                <li><b>Acceso permitido / denegado:</b> Resultado del análisis que determina si la placa reconocida se encuentra o no en la lista.</li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>
