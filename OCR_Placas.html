@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OCR Placas - Detalle</title>
+    <title>Lectura de Placas - CBTIS 144</title>
     <style>
         * {
             margin: 0;
@@ -13,14 +13,13 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f4f8;
-            color: #2d3748;
+            background: #fff5f2;
+            color: #2d1e1e;
             line-height: 1.6;
         }
 
-        /* Header */
         .header {
-            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+            background: linear-gradient(135deg, #ffb6b9 0%, #ffe5b4 100%);
             color: white;
             padding: 3rem 2rem;
             text-align: center;
@@ -32,46 +31,29 @@
             letter-spacing: 1px;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-bottom: 1rem;
-            color: white;
-            text-decoration: none;
-            font-size: 0.95rem;
-            opacity: 0.9;
-            transition: opacity 0.3s;
-        }
-
-        .back-link:hover {
-            opacity: 1;
-        }
-
-        /* Container */
         .container {
             max-width: 1000px;
             margin: 0 auto;
             padding: 3rem 2rem;
         }
 
-        /* Sección de Código */
         .section {
             background: white;
             border-radius: 8px;
             padding: 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 2px 10px rgba(8, 145, 178, 0.1);
+            box-shadow: 0 2px 10px rgba(255, 182, 185, 0.2);
         }
 
         .section-title {
             font-size: 1.5rem;
             margin-bottom: 1.5rem;
-            color: #0891b2;
+            color: #ff8da1;
             font-weight: 400;
-            border-bottom: 2px solid #e0f2fe;
+            border-bottom: 2px solid #ffe5b4;
             padding-bottom: 0.5rem;
         }
 
-        /* Código */
         .code-block {
             background: #1e293b;
             color: #e2e8f0;
@@ -81,7 +63,7 @@
             font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
             font-size: 0.9rem;
             line-height: 1.6;
-            border: 1px solid #0891b2;
+            border: 1px solid #ffb6b9;
         }
 
         .code-block code {
@@ -89,582 +71,168 @@
             white-space: pre;
         }
 
-        /* Sintaxis highlighting manual */
-        .keyword { color: #38bdf8; }
-        .string { color: #7dd3fc; }
-        .comment { color: #64748b; }
-        .function { color: #22d3ee; }
-        .number { color: #a78bfa; }
+        .keyword { color: #ff8da1; }
+        .string { color: #ffe5b4; }
+        .comment { color: #a18276; }
+        .function { color: #ffb6b9; }
+        .number { color: #ffc9a9; }
 
-        /* Glosario */
-        .glossary {
-            margin-top: 1.5rem;
-        }
-
-        .glossary-item {
-            margin-bottom: 1.5rem;
-            padding: 1.2rem;
-            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
-            border-radius: 8px;
-            border-left: 4px solid #0891b2;
-            transition: transform 0.2s ease;
-        }
-
-        .glossary-item:hover {
-            transform: translateX(5px);
-        }
-
-        .glossary-term {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #0891b2;
-            margin-bottom: 0.5rem;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .glossary-icon {
-            font-size: 1.3rem;
-        }
-
-        .glossary-description {
-            color: #475569;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 0.8rem;
-        }
-
-        .glossary-params {
-            margin-top: 0.5rem;
-            padding-left: 1.5rem;
-        }
-
-        .glossary-params li {
-            margin-bottom: 0.3rem;
-            color: #334155;
-            font-size: 0.9rem;
-        }
-
-        .param-name {
-            font-weight: 600;
-            color: #0e7490;
-            font-family: monospace;
-        }
-
-        .example-output {
-            background: #f8fafc;
-            border: 1px dashed #94a3b8;
-            padding: 0.8rem;
-            border-radius: 4px;
-            margin-top: 0.5rem;
-            font-size: 0.85rem;
-            color: #475569;
-            font-family: monospace;
-        }
-
-        .access-demo {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .access-card {
-            padding: 1.5rem;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .access-granted {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-        }
-
-        .access-denied {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-        }
-
-        .access-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .access-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .access-message {
-            font-size: 0.95rem;
-            opacity: 0.95;
-        }
-
-        .plates-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
+        ul {
+            list-style: none;
             margin-top: 1rem;
-            padding: 1rem;
-            background: #f1f5f9;
-            border-radius: 8px;
         }
 
-        .plate-item {
-            background: white;
-            padding: 1rem;
-            border-radius: 6px;
-            text-align: center;
-            border: 2px solid #0891b2;
-            font-family: monospace;
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: #0891b2;
+        ul li {
+            margin-bottom: 0.5rem;
+            padding-left: 1rem;
+            border-left: 3px solid #ffb6b9;
         }
 
-        .process-flow {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 1.5rem;
-            padding: 1.5rem;
-            background: #f1f5f9;
-            border-radius: 8px;
-        }
+        html { scroll-behavior: smooth; }
 
-        .process-step {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: white;
-            border-radius: 6px;
-            border-left: 4px solid #0891b2;
-        }
-
-        .step-number {
-            background: #0891b2;
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .step-content {
-            flex: 1;
-        }
-
-        .step-title {
-            font-weight: 600;
-            color: #0891b2;
-            margin-bottom: 0.3rem;
-        }
-
-        .step-desc {
-            font-size: 0.9rem;
-            color: #64748b;
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            .container {
-                padding: 2rem 1rem;
-            }
-
-            .section {
-                padding: 1.5rem;
-            }
-
-            .code-block {
-                font-size: 0.8rem;
-                padding: 1rem;
-            }
-
-            .header {
-                padding: 2rem 1rem;
-            }
-
-            .glossary-item {
-                padding: 1rem;
-            }
-
-            .access-demo {
-                grid-template-columns: 1fr;
-            }
-
-            .plates-list {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Scroll suave */
-        html {
-            scroll-behavior: smooth;
+            .container { padding: 2rem 1rem; }
+            .section { padding: 1.5rem; }
+            .code-block { font-size: 0.8rem; padding: 1rem; }
+            .header { padding: 2rem 1rem; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
-        <a href="index.html" class="back-link">← Volver al portafolio</a>
-        <h1>OCR de Placas Vehiculares</h1>
+        <h1>📸 LECTURA DE PLACAS VEHICULARES - CBTIS 144</h1>
     </header>
 
-    <!-- Contenido -->
     <div class="container">
-        <!-- Sistema de Control de Acceso -->
         <section class="section">
-            <h2 class="section-title">🚗 Sistema de Control de Acceso - CBTIS 144</h2>
-            <div class="glossary">
-                <div class="glossary-item">
-                    <div class="glossary-description">
-                        Sistema automático de reconocimiento de placas vehiculares que controla el acceso 
-                        al estacionamiento del CBTIS 144. Lee la placa mediante OCR y verifica si está 
-                        autorizada en la base de datos.
-                    </div>
-                    <div class="access-demo">
-                        <div class="access-card access-granted">
-                            <div class="access-icon">✅</div>
-                            <div class="access-title">ACCESO PERMITIDO</div>
-                            <div class="access-message">Bienvenido al estacionamiento<br>del CBTIS 144</div>
-                        </div>
-                        <div class="access-card access-denied">
-                            <div class="access-icon">🚫</div>
-                            <div class="access-title">ACCESO DENEGADO</div>
-                            <div class="access-message">Placa no encontrada</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <h2 class="section-title">🚗 Descripción del Proyecto</h2>
+            <p>
+                Este sistema utiliza técnicas de <b>Visión Artificial</b> para reconocer texto en imágenes 
+                de placas vehiculares mediante la tecnología <b>OCR (Reconocimiento Óptico de Caracteres)</b>.
+                Lee dos imágenes distintas, extrae el texto de cada placa y lo compara con una lista de placas
+                autorizadas para determinar si el acceso está permitido o denegado.
+            </p>
         </section>
 
-        <!-- Placas Autorizadas -->
         <section class="section">
-            <h2 class="section-title">📋 Placas Autorizadas</h2>
-            <div class="glossary">
-                <div class="glossary-item">
-                    <div class="glossary-description">
-                        Lista de placas vehiculares con acceso autorizado al estacionamiento:
-                    </div>
-                    <div class="plates-list">
-                        <div class="plate-item">XYZ789o</div>
-                        <div class="plate-item">BPB-543</div>
-                        <div class="plate-item">QWE987</div>
-                        <div class="plate-item">DLP876</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Proceso del Sistema -->
-        <section class="section">
-            <h2 class="section-title">⚙️ Flujo del Sistema</h2>
-            <div class="glossary">
-                <div class="glossary-item">
-                    <div class="glossary-description">
-                        Pasos que sigue el sistema para verificar el acceso:
-                    </div>
-                    <div class="process-flow">
-                        <div class="process-step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <div class="step-title">Cargar Imagen de Placa</div>
-                                <div class="step-desc">Se captura la foto de la placa vehicular (placas.jpg)</div>
-                            </div>
-                        </div>
-                        <div class="process-step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <div class="step-title">Redimensionar</div>
-                                <div class="step-desc">Se ajusta a 800×300 píxeles para mejor procesamiento</div>
-                            </div>
-                        </div>
-                        <div class="process-step">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <div class="step-title">Preprocesamiento OCR</div>
-                                <div class="step-desc">Convertir a grises y binarizar (umbral 120)</div>
-                            </div>
-                        </div>
-                        <div class="process-step">
-                            <div class="step-number">4</div>
-                            <div class="step-content">
-                                <div class="step-title">Extraer Texto</div>
-                                <div class="step-desc">Tesseract lee los caracteres de la placa</div>
-                            </div>
-                        </div>
-                        <div class="process-step">
-                            <div class="step-number">5</div>
-                            <div class="step-content">
-                                <div class="step-title">Limpiar Texto</div>
-                                <div class="step-desc">Eliminar espacios y caracteres no deseados</div>
-                            </div>
-                        </div>
-                        <div class="process-step">
-                            <div class="step-number">6</div>
-                            <div class="step-content">
-                                <div class="step-title">Verificar Autorización</div>
-                                <div class="step-desc">Buscar la placa en la lista autorizada</div>
-                            </div>
-                        </div>
-                        <div class="process-step">
-                            <div class="step-number">7</div>
-                            <div class="step-content">
-                                <div class="step-title">Otorgar/Denegar Acceso</div>
-                                <div class="step-desc">Mostrar mensaje según resultado de verificación</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sección de Código -->
-        <section class="section">
-            <h2 class="section-title">Código del Proyecto</h2>
+            <h2 class="section-title">💻 Código Python del Proyecto</h2>
             <div class="code-block">
-<code>
-    import cv2
+<code>import cv2
 import pytesseract
 
-pytesseract.pytesseract.tesseract_cmd=r"C:\Users\MATUTINO\AppData\Local\Programs\Tesseract-OCR\tesseract.exe"
+# CAMBIA ESTA RUTA A DONDE INSTALASTE TESSERACT EN TU COMPUTADORA
+pytesseract.pytesseract.tesseract_cmd = r"C:\Users\MATUTINO\AppData\Local\Programs\Tesseract-OCR\tesseract.exe"
 
-#lista de  placas aceptadas en el estacionamiento del cbtis144
-placas_autorizadas=['XYZ789o','BPB-543','QWE987','DLP876']
+# Lista de placas autorizadas en el estacionamiento del CBTIS144
+placas_autorizadas = ['XYZ789', 'QWEYQ87', 'NITGUILTY', '["BL445567|']
 
-#cargar placa a leer
-placa=cv2.imread("placas.jpg")
-placanueva=cv2.resize(placa,(800,300))
+print("="*60)
+print("SISTEMA DE CONTROL DE ACCESO - ESTACIONAMIENTO CBTIS 144")
+print("="*60)
 
-#convertir en escalas de grises
-placa_gris=cv2.cvtColor(placanueva,cv2.COLOR_BGR2GRAY)
+# 1. CARGAR 2 IMAGENES DE PLACAS
+print("\n--- CARGANDO IMAGENES ---\n")
 
-#separamos el fondo con el texto
-placa_res=cv2.threshold(placa_gris,120,255,cv2.THRESH_BINARY)[1]
+# Primera placa
+placa1 = cv2.imread("placas3.jpg")
+placanueva1 = cv2.resize(placa1, (800, 300))
 
-#configurar OCR
-texto_placa=pytesseract.image_to_string(placa_res,lang='spa')
+# Segunda placa
+placa2 = cv2.imread("placas4.png")
+placanueva2 = cv2.resize(placa2, (800, 300))
 
-#limpiar la cadena de texto
-texto_limpio=texto_placa.strip().replace("","")
+# 2. EXTRAER EL TEXTO DE LAS 2 PLACAS
+print("--- EXTRAYENDO TEXTO ---\n")
 
-#buscar la placa de la lista autorizada
-if texto_limpio in placas_autorizadas:
-    print("ACCESO PERMITIDO!!!!,\n Bienvenido al estacionamiento del CBTIS 144")
+# Procesar primera placa
+placa_gris1 = cv2.cvtColor(placanueva1, cv2.COLOR_BGR2GRAY)
+placa_res1 = cv2.threshold(placa_gris1, 120, 255, cv2.THRESH_BINARY)[1]
+texto_placa1 = pytesseract.image_to_string(placa_res1, lang='eng')
+texto_limpio1 = texto_placa1.strip().replace(" ", "").replace("-", "").upper()
 
+print("Placa 1 detectada: " + texto_limpio1)
+
+# Procesar segunda placa
+placa_gris2 = cv2.cvtColor(placanueva2, cv2.COLOR_BGR2GRAY)
+placa_res2 = cv2.threshold(placa_gris2, 120, 255, cv2.THRESH_BINARY)[1]
+texto_placa2 = pytesseract.image_to_string(placa_res2, lang='eng')
+texto_limpio2 = texto_placa2.strip().replace(" ", "").replace("-", "").upper()
+
+print("Placa 2 detectada: " + texto_limpio2)
+
+# 3. RECORRER LA LISTA DE LAS PLACAS PERMITIDAS
+print("\n--- LISTA DE PLACAS AUTORIZADAS ---")
+for placa in placas_autorizadas:
+    print("  * " + placa)
+
+# 4. MOSTRAR UN MENSAJE INDICANDO QUE LAS PLACAS LEIDAS
+print("\n--- VERIFICANDO PLACAS ESCANEADAS ---\n")
+
+# Verificar placa 1
+print("Placa 1: " + texto_limpio1)
+if texto_limpio1 in placas_autorizadas:
+    print("  ACCESO PERMITIDO!!!!")
+    print("  Bienvenido al estacionamiento del CBTIS 144")
 else:
-    print("ACCESO DENEGADO , \n placa no encontrada")
+    print("  ACCESO DENEGADO")
+    print("  Placa no encontrada")
 
-#imprimimos el titulo
-print("texto detectado")
-print(texto_placa)
+print("")
 
-cv2.imshow("imagen analizada",placa)
+# Verificar placa 2
+print("Placa 2: " + texto_limpio2)
+if texto_limpio2 in placas_autorizadas:
+    print("  ACCESO PERMITIDO!!!!")
+    print("  Bienvenido al estacionamiento del CBTIS 144")
+else:
+    print("  ACCESO DENEGADO")
+    print("  Placa no encontrada")
+
+# 5. MOSTRAR UN MENSAJE DE LAS PLACAS RESTANTES (LAS QUE NO SE ESCANEARON)
+print("\n--- PLACAS NO ESCANEADAS (RESTANTES) ---")
+
+placas_escaneadas = []
+placas_escaneadas.append(texto_limpio1)
+placas_escaneadas.append(texto_limpio2)
+
+print("Las siguientes placas autorizadas NO fueron escaneadas:")
+for placa in placas_autorizadas:
+    if placa not in placas_escaneadas:
+        print("  * " + placa)
+
+# 6. HACER LA PRUEBA CARGANDO 2 FOTOS DE PLACAS REALES Y 2 IMAGENES COMO EN CLASE
+print("\n--- MOSTRANDO IMAGENES ---")
+print("Presiona cualquier tecla para continuar")
+
+cv2.imshow("Placa 1 - " + texto_limpio1, placanueva1)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-</code>
+
+cv2.imshow("Placa 2 - " + texto_limpio2, placanueva2)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+print("\n" + "="*60)
+print("SISTEMA FINALIZADO")
+print("="*60)</code>
             </div>
         </section>
 
-        <!-- Glosario de Funciones -->
         <section class="section">
-            <h2 class="section-title">Glosario de Funciones y Conceptos</h2>
-            
-            <div class="glossary">
-                <!-- Lista placas_autorizadas -->
-                <div class="glossary-item">
-                    <div class="glossary-term">
-                        <span class="glossary-icon">📝</span>
-                        placas_autorizadas = [...]
-                    </div>
-                    <div class="glossary-description">
-                        Lista de Python que almacena las placas vehiculares con acceso autorizado al estacionamiento. 
-                        Funciona como una base de datos simple en memoria. Cada elemento es un string con el formato de placa.
-                    </div>
-                    <div class="example-output">
-                        💡 En un sistema real, esto estaría en una base de datos (MySQL, PostgreSQL, MongoDB)
-                    </div>
-                </div>
-
-                <!-- resize para placas -->
-                <div class="glossary-item">
-                    <div class="glossary-term">
-                        <span class="glossary-icon">📐</span>
-                        resize(placa, (800, 300))
-                    </div>
-                    <div class="glossary-description">
-                        Redimensiona la imagen de la placa a 800×300 píxeles. Este tamaño alargado es ideal para placas 
-                        vehiculares que típicamente tienen formato rectangular horizontal. Mejora la precisión del OCR 
-                        al normalizar el tamaño.
-                    </div>
-                    <div class="example-output">
-                        🚗 Formato típico de placa: Ancho mayor que alto (proporción ~8:3)
-                    </div>
-                </div>
-
-                <!-- strip() -->
-                <div class="glossary-item">
-                    <div class="glossary-term">
-                        <span class="glossary-icon">✂️</span>
-                        texto_placa.strip()
-                    </div>
-                    <div class="glossary-description">
-                        Método de string que elimina espacios en blanco, tabulaciones y saltos de línea al inicio 
-                        y final de la cadena. Es crucial para limpiar el texto extraído por OCR que puede contener 
-                        espacios innecesarios.
-                    </div>
-                    <div class="example-output">
-                        📊 Ejemplo: "  ABC123  \n" → "ABC123"
-                    </div>
-                </div>
-
-                <!-- replace() -->
-                <div class="glossary-item">
-                    <div class="glossary-term">
-                        <span class="glossary-icon">🔄</span>
-                        .replace(" ", "")
-                    </div>
-                    <div class="glossary-description">
-                        Método que reemplaza todas las ocurrencias de un carácter o substring por otro. 
-                        En este caso, elimina TODOS los espacios internos de la cadena, no solo los extremos. 
-                        Útil porque el OCR a veces inserta espacios donde no debería.
-                    </div>
-                    <div class="example-output">
-                        📊 Ejemplo: "AB C 123" → "ABC123"
-                    </div>
-                </div>
-
-                <!-- Encadenamiento de métodos -->
-                <div class="glossary-item">
-                    <div class="glossary-term">
-                        <span class="glossary-icon">🔗</span>
-                        .strip().replace()
-                    </div>
-                    <div class="glossary-description">
-                        Encadenamiento de métodos: se aplican múltiples operaciones en una sola línea. 
-                        Primero strip() elimina espacios externos, luego replace() elimina espacios internos. 
-                        El resultado del primer método se pasa como entrada al segundo.
-                    </div>
-                    <div class="example-output">
-                        🔀 Flujo: "  AB C 123  " → strip() → "AB C 123" → replace() → "ABC123"
-                    </div>
-                </div>
-
-                <!-- operador in -->
-                <div class="glossary-item">
-                    <div class="glossary-term">
-                        <span class="glossary-icon">🔍</span>
-                        texto_limpio in placas_autorizadas
-                    </div>
-                    <div class="glossary-description">
-                        Operador de pertenencia que verifica si un elemento existe dentro de una lista. 
-                        Retorna True si encuentra coincidencia exacta, False si no. Es case-sensitive 
-                        (distingue mayúsculas y minúsculas).
-                    </div>
-                    <div class="example-output">
-                        ⚠️ "ABC123" ≠ "abc123" (son diferentes) | "ABC123" == "ABC123" (son iguales)
-                    </div>
-                </div>
-
-                <!-- Estructura if-else -->
-                <div class="glossary-item">
-                    <div class="glossary-term">
-                        <span class="glossary-icon">🔀</span>
-                        if texto_limpio in placas_autorizadas: ... else: ...
-                    </div>
-                    <div class="glossary-description">
-                        Estructura condicional que toma decisiones. Si la placa está en la lista autorizada, 
-                        concede acceso. Si no está, deniega el acceso. Es la lógica central del sistema de control.
-                    </div>
-                    <div class="example-output">
-                        🚦 Flujo: Verificar placa → ¿Está en lista? → Sí: Permitir | No: Denegar
-                    </div>
-                </div>
-
-                <!-- Aplicación práctica -->
-                <div class="glossary-item">
-                    <div class="glossary-term">
-                        <span class="glossary-icon">🏢</span>
-                        Aplicación Práctica: Control de Acceso
-                    </div>
-                    <div class="glossary-description">
-                        Este sistema tiene aplicaciones reales en seguridad y automatización:
-                    </div>
-                    <ul class="glossary-params">
-                        <li><span class="param-name">Estacionamientos:</span> Control automático sin personal</li>
-                        <li><span class="param-name">Edificios corporativos:</span> Acceso vehicular a empleados</li>
-                        <li><span class="param-name">Residenciales:</span> Seguridad en conjuntos habitacionales</li>
-                        <li><span class="param-name">Peajes:</span> Cobro automático por reconocimiento de placa</li>
-                        <li><span class="param-name">Vigilancia:</span> Registro de vehículos que entran/salen</li>
-                    </ul>
-                </div>
-
-                <!-- Mejoras posibles -->
-                <div class="glossary-item">
-                    <div class="glossary-term">
-                        <span class="glossary-icon">⚡</span>
-                        Mejoras Posibles al Sistema
-                    </div>
-                    <div class="glossary-description">
-                        Este prototipo puede mejorarse con las siguientes características:
-                    </div>
-                    <ul class="glossary-params">
-                        <li><span class="param-name">Base de datos:</span> Usar SQL en lugar de lista en memoria</li>
-                        <li><span class="param-name">Normalización:</span> Convertir a mayúsculas/minúsculas para comparación</li>
-                        <li><span class="param-name">Log de accesos:</span> Registrar fecha/hora de cada entrada</li>
-                        <li><span class="param-name">Múltiples intentos:</span> Tolerancia a errores de OCR</li>
-                        <li><span class="param-name">Interfaz gráfica:</span> GUI en lugar de consola</li>
-                        <li><span class="param-name">Cámara en vivo:</span> Captura automática en lugar de imagen estática</li>
-                        <li><span class="param-name">Notificaciones:</span> Alertas por SMS/email para accesos denegados</li>
-                    </ul>
-                </div>
-
-                <!-- Desafíos del OCR de placas -->
-                <div class="glossary-item">
-                    <div class="glossary-term">
-                        <span class="glossary-icon">⚠️</span>
-                        Desafíos Específicos de Placas
-                    </div>
-                    <div class="glossary-description">
-                        El reconocimiento de placas vehiculares presenta desafíos únicos:
-                    </div>
-                    <ul class="glossary-params">
-                        <li><span class="param-name">Caracteres similares:</span> O/0, I/1, S/5, B/8 pueden confundirse</li>
-                        <li><span class="param-name">Suciedad:</span> Placas sucias o dañadas dificultan lectura</li>
-                        <li><span class="param-name">Ángulo de captura:</span> Foto frontal directa es crucial</li>
-                        <li><span class="param-name">Iluminación:</span> Reflejos o sombras afectan precisión</li>
-                        <li><span class="param-name">Formatos variables:</span> Diferentes estados/países tienen formatos distintos</li>
-                        <li><span class="param-name">Velocidad:</span> Vehículos en movimiento generan desenfoque</li>
-                    </ul>
-                </div>
-
-                <!-- Seguridad del sistema -->
-                <div class="glossary-item">
-                    <div class="glossary-term">
-                        <span class="glossary-icon">🔒</span>
-                        Consideraciones de Seguridad
-                    </div>
-                    <div class="glossary-description">
-                        Para un sistema de producción real, considerar:
-                    </div>
-                    <ul class="glossary-params">
-                        <li><span class="param-name">Encriptación:</span> Proteger lista de placas autorizadas</li>
-                        <li><span class="param-name">Autenticación adicional:</span> Combinar con RFID o código PIN</li>
-                        <li><span class="param-name">Auditoría:</span> Registro detallado de todos los intentos de acceso</li>
-                        <li><span class="param-name">Backup:</span> Sistema redundante en caso de fallo del OCR</li>
-                        <li><span class="param-name">Rate limiting:</span> Prevenir ataques de fuerza bruta</li>
-                    </ul>
-                </div>
-
-            </div>
+            <h2 class="section-title">📘 Glosario de Términos</h2>
+            <ul>
+                <li><b>OCR (Optical Character Recognition):</b> Tecnología que permite reconocer y extraer texto de imágenes o documentos escaneados.</li>
+                <li><b>OpenCV:</b> Biblioteca de código abierto utilizada para el procesamiento de imágenes y visión artificial en Python.</li>
+                <li><b>Pytesseract:</b> Interfaz que conecta Python con el motor de reconocimiento de texto Tesseract.</li>
+                <li><b>cv2.imread():</b> Función que carga una imagen en memoria desde un archivo.</li>
+                <li><b>cv2.cvtColor():</b> Convierte la imagen a escala de grises o a otros espacios de color.</li>
+                <li><b>cv2.threshold():</b> Aplica un umbral a la imagen para mejorar el contraste entre letras y fondo.</li>
+                <li><b>pytesseract.image_to_string():</b> Extrae el texto detectado en la imagen procesada.</li>
+                <li><b>if / else:</b> Estructuras de decisión que permiten ejecutar instrucciones según condiciones.</li>
+                <li><b>Listas:</b> Estructuras de datos que almacenan varios elementos dentro de una sola variable.</li>
+                <li><b>Placas autorizadas:</b> Conjunto de códigos registrados que tienen permiso para ingresar al estacionamiento.</li>
+                <li><b>Acceso permitido / denegado:</b> Resultado del análisis que determina si la placa reconocida se encuentra o no en la lista.</li>
+            </ul>
         </section>
     </div>
 </body>
