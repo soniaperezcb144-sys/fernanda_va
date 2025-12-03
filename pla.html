@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lectura Placas</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #FFE9E3; 
+            color: #5A3A41; 
+            line-height: 1.6;
+            padding: 1.5rem;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #FFB38A 0%, #FFC7E3 100%);
+            color: white;
+            padding: 2.5rem;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        /* SECTION */
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(255, 167, 196, 0.25);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #FF7AA2;
+            border-bottom: 2px solid #FFDCE8;
+            padding-bottom: 0.3rem;
+        }
+
+        /* CODE BLOCK */
+        .code-block {
+            background: #402831;
+            color: #FFE6F1;
+            padding: 1.3rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: Consolas, monospace;
+            border: 1px solid #FF9FCA;
+            margin-top: 1rem;
+        }
+
+        /* GLOSARIO */
+        .glossary-item {
+            background: linear-gradient(135deg, #FFD1B3 0%, #FFE3EF 100%);
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #FF9FCA;
+            margin-bottom: 1.2rem;
+        }
+
+        .glossary-term {
+            font-size: 1.1rem;
+            color: #FF7AA2;
+            font-weight: 600;
+            font-family: Consolas, monospace;
+            margin-bottom: 0.3rem;
+        }
+
+        /* BOTÓN VOLVER AL INDEX */
+        .back-button {
+            display: block;
+            width: 200px;
+            margin: 1rem auto;
+            text-align: center;
+            padding: 0.8rem 1rem;
+            background: linear-gradient(135deg, #FFC7E3, #FFB38A);
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(255, 167, 196, 0.45);
+            transition: 0.2s ease-in-out;
+        }
+
+        .back-button:hover {
+            transform: scale(1.05);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>Lectura de Placas (OCR)</h1>
+    </header>
+
+    <!-- INTRO -->
+    <section class="section">
+        <h2 class="section-title">¿Qué es OCR?</h2>
+        <p>
+            OCR significa <strong>Optical Character Recognition</strong> (Reconocimiento Óptico de Caracteres).  
+            Es la tecnología que permite leer textos desde imágenes como fotos, documentos escaneados o placas.
+        </p>
+    </section>
+
+    <!-- CÓDIGO -->
+    <section class="section">
+        <h2 class="section-title">Ejemplo de Código OCR</h2>
+        <p>Aquí tienes un ejemplo básico del proceso OCR:</p>
+
+        <div class="code-block">
+            <pre>
+                import cv2
+import pytesseract
+
+# Ruta del ejecutable de Tesseract
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
+# 1. Cargar imagen
+img = cv2.imread("img_1.png")
+
+# 2. Obtener tamaño
+alto, ancho, _ = img.shape
+
+# 3. Zona del recorte (letras grandes)
+y1 = int(alto * 0.25)
+y2 = int(alto * 0.75)
+x1 = int(ancho * 0.15)
+x2 = int(ancho * 0.95)
+recorte = img[y1:y2, x1:x2]
+
+# --- PREPROCESAMIENTO MEJORADO ---
+
+# Convertir a gris
+gris = cv2.cvtColor(recorte, cv2.COLOR_BGR2GRAY)
+
+# Aumentar contraste (truco muy efectivo)
+gris = cv2.convertScaleAbs(gris, alpha=2.0, beta=0)
+
+# Eliminar ruido
+blur = cv2.GaussianBlur(gris, (5, 5), 0)
+
+# Umbral Otsu (mejor para texto grueso)
+_, binaria = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+
+# Aumentar tamaño antes de OCR
+binaria_grande = cv2.resize(binaria, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
+
+# --- OCR con whitelist y modo "texto sencillo" ---
+config = r'-c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 --psm 7'
+
+texto = pytesseract.image_to_string(binaria_grande, config=config)
+
+# Limpiar texto
+placa = texto.strip().replace(" ", "").replace("\n", "")
+
+print("Placa detectada:", placa)
+
+# Mostrar ventanas
+cv2.imshow("Recorte", recorte)
+cv2.imshow("Binaria", binaria)
+cv2.imshow("Binaria Grande", binaria_grande)
+cv2.waitKey(0)
+
+            </pre>
+        </div>
+    </section>
+
+    <!-- GLOSARIO -->
+    <section class="section">
+        <h2 class="section-title">Glosario</h2>
+
+        <div class="glossary-item">
+            <div class="glossary-term">OCR</div>
+            <p>Proceso que convierte una imagen con texto en texto editable.</p>
+        </div>
+
+        <div class="glossary-item">
+            <div class="glossary-term">cv2.imread()</div>
+            <p>Función que carga una imagen desde un archivo.</p>
+        </div>
+
+        <div class="glossary-item">
+            <div class="glossary-term">pytesseract</div>
+            <p>Librería que hace el reconocimiento de texto.</p>
+        </div>
+
+        <div class="glossary-item">
+            <div class="glossary-term">Grayscale</div>
+            <p>Imagen convertida a tonos de gris para mejorar lectura OCR.</p>
+        </div>
+
+    </section>
+
+    <!-- BOTÓN A INDEX -->
+    <a href="index.html" class="back-button">Volver al inicio</a>
+
+</body>
+</html>
